@@ -108,6 +108,13 @@
     flex-direction: column;
   }
 
+  .address-block input[readonly] {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #bbb;
+    cursor: default;
+  }
+
   canvas {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -136,16 +143,16 @@
   </label><br>
   <div class="address-block">
   <label>Adres:
-    <input id="address" name="address" readonly>
+    <input id="address" name="address" readonly tabindex="-1">
   </label>
   <label>Postcode:
-    <input id="postcode" name="postcode" readonly>
+    <input id="postcode" name="postcode" readonly tabindex="-1">
   </label>
   <label>City:
-    <input id="city" name="city" readonly>
+    <input id="city" name="city" readonly tabindex="-1">
   </label>
   <label>Provincie:
-    <input id="provincie" name="provincie" readonly>
+    <input id="provincie" name="provincie" readonly tabindex="-1">
   </label>
 </div>
   <label>Voornaam:
