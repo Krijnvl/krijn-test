@@ -85,6 +85,36 @@
     margin-bottom: 20px;
   }
 
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .product-item {
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .product-item.checked {
+    border-color: #fff;
+  }
+
+  .product-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 5px;
+  }
+
+  .qty {
+    margin-top: 10px;
+  }
+
   .summary-item {
     margin-bottom: 5px;
   }
@@ -230,21 +260,47 @@
   <h3>Bestelling</h3>
   <div class="product-group">
     <h4>Gold Dry Premium Soda</h4>
-    <label><input type="checkbox" id="sodaOriginal" onchange="toggleQty('sodaOriginalQty')"> Gold Dry Original 250ml (24 HE)</label><br>
-    <label><input type="checkbox" id="sodaMindset" onchange="toggleQty('sodaMindsetQty')"> Gold Dry Mindset 250ml (24 HE)</label><br>
-    <label><input type="checkbox" id="sodaDream" onchange="toggleQty('sodaDreamQty')"> Gold Dry Dream 250ml (24 HE)</label><br>
-    <label><input type="checkbox" id="sodaSky" onchange="toggleQty('sodaSkyQty')"> Gold Dry Sky 250ml (24 HE)</label><br>
-    <div id="sodaOriginalQty" style="display:none">
-      Aantal 24x Original: <input id="op9u" type="number" min="0" value="0">
-    </div>
-    <div id="sodaMindsetQty" style="display:none">
-      Aantal 24x Mindset: <input id="kg3w" type="number" min="0" value="0">
-    </div>
-    <div id="sodaDreamQty" style="display:none">
-      Aantal 24x Dream: <input id="79Ki" type="number" min="0" value="0">
-    </div>
-    <div id="sodaSkyQty" style="display:none">
-      Aantal 24x Sky: <input id="qA18" type="number" min="0" value="0">
+    <div class="product-grid">
+      <div class="product-item" id="itemOriginal">
+        <label>
+          <input type="checkbox" id="sodaOriginal" onchange="toggleQty('sodaOriginalQty', this)">
+          <img src="https://images.fillout.com/orgid-113709/flowpublicid-jxeCCTXRn7us/widgetid-itMy/1dCMJZyuqd9ptL28TAWNKV/Original-Blik-1024x1024-(1).png?a=eV7eehJnrGnZZ74JJ4hoDz" alt="Gold Dry Original">
+          <div>Gold Dry Original 250ml (24 HE)</div>
+        </label>
+        <div id="sodaOriginalQty" class="qty" style="display:none">
+          Aantal 24x Original: <input id="op9u" type="number" min="0" value="0">
+        </div>
+      </div>
+      <div class="product-item" id="itemMindset">
+        <label>
+          <input type="checkbox" id="sodaMindset" onchange="toggleQty('sodaMindsetQty', this)">
+          <img src="https://images.fillout.com/orgid-113709/flowpublicid-jxeCCTXRn7us/widgetid-itMy/fPkuady7zxrWFUsWDMbHKR/Mindset-Blik-1024x1024-(1).png?a=gkCrw8SaXeKAz1YC3KAxLj" alt="Gold Dry Mindset">
+          <div>Gold Dry Mindset 250ml (24 HE)</div>
+        </label>
+        <div id="sodaMindsetQty" class="qty" style="display:none">
+          Aantal 24x Mindset: <input id="kg3w" type="number" min="0" value="0">
+        </div>
+      </div>
+      <div class="product-item" id="itemDream">
+        <label>
+          <input type="checkbox" id="sodaDream" onchange="toggleQty('sodaDreamQty', this)">
+          <img src="https://images.fillout.com/orgid-113709/flowpublicid-jxeCCTXRn7us/widgetid-itMy/qF7nbuNm2vHPiWgWpTqmYc/Dream-Blik-1024x1024-(1).png?a=egRsWarXyKSRs6xsyfZPuv" alt="Gold Dry Dream">
+          <div>Gold Dry Dream 250ml (24 HE)</div>
+        </label>
+        <div id="sodaDreamQty" class="qty" style="display:none">
+          Aantal 24x Dream: <input id="79Ki" type="number" min="0" value="0">
+        </div>
+      </div>
+      <div class="product-item" id="itemSky">
+        <label>
+          <input type="checkbox" id="sodaSky" onchange="toggleQty('sodaSkyQty', this)">
+          <img src="https://images.fillout.com/orgid-113709/flowpublicid-jxeCCTXRn7us/widgetid-itMy/1enAgx5R42DMzbknaqAVzg/Sky-Blik-1024x1024-(1).png?a=8KuktjE9MoiZ8zcWnxjcFV" alt="Gold Dry Sky">
+          <div>Gold Dry Sky 250ml (24 HE)</div>
+        </label>
+        <div id="sodaSkyQty" class="qty" style="display:none">
+          Aantal 24x Sky: <input id="qA18" type="number" min="0" value="0">
+        </div>
+      </div>
     </div>
   </div>
   <div class="product-group">
@@ -329,9 +385,16 @@ function toggleAltAdres() {
   const sel = document.getElementById('ftcZ').value;
   document.getElementById('altAdres').style.display = sel === 'Nee' ? 'block' : 'none';
 }
-function toggleQty(id) {
+function toggleQty(id, cb) {
   const el = document.getElementById(id);
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  if (!el) return;
+  if (cb) {
+    el.style.display = cb.checked ? 'block' : 'none';
+    const item = cb.closest('.product-item');
+    if (item) item.classList.toggle('checked', cb.checked);
+  } else {
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
 }
 function toggleOpening() {
   // Placeholder for eventuele logica
