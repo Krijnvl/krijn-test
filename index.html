@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Dry Bestelformulier</title>
+<style>
+  body { font-family: Arial, sans-serif; }
+  .step { display:none; }
+  .step.active { display:block; }
+  .progress { margin-bottom:20px; }
+  .product-group { border:1px solid #ccc; padding:10px; margin-bottom:10px; }
+  .summary-item { margin-bottom:5px; }
+  .warning { color: #ffcc00; font-weight:bold; }
+  canvas { border:1px solid #000; }
+</style>
+</head>
+<body>
+<div id="progress" class="progress">Stap <span id="stepnum">1</span>/5</div>
+<form id="orderForm">
+<div class="step active" id="welcomeStep">
+  <h2>Welkom bij Gold Dry</h2>
+  <p>Welkom tekst hier...</p>
+  <button type="button" onclick="nextStep()">Start</button>
+</div>
+<div class="step" id="klantStep">
+  <h3>Klantgegevens</h3>
+  <label>Naam vertegenwoordiger:
+    <input id="3Tzr" name="repName" required>
+  </label><br>
+  <label>Naam bedrijf: *
+    <input id="companyName" name="companyName" required>
+  </label><br>
+  <label>Filiaal ID:
+    <input id="2fC3" name="filiaalId" required onblur="lookupFiliaal()">
+  </label><br>
+  <label>Adres:
+    <input id="address" name="address" readonly>
+  </label><br>
+  <label>Postcode:
+    <input id="postcode" name="postcode" readonly>
+  </label><br>
+  <label>City:
+    <input id="city" name="city" readonly>
+  </label><br>
+  <label>Provincie:
+    <input id="provincie" name="provincie" readonly>
+  </label><br>
+  <label>Voornaam:
+    <input id="gWe8" name="firstName" required>
+  </label><br>
+  <label>Achternaam:
+    <input id="ajwm" name="lastName" required>
+  </label><br>
+  <label>Email:
+    <input id="email" type="email" name="email" required>
+  </label><br>
+  <label>Telefoonnummer:
+    <input id="phone" name="phone" required>
+  </label><br>
+  <label>BTW-ID (Belgische klanten):
+    <input id="btw" name="btw">
+  </label><br>
+  <button type="button" onclick="nextStep()">Next</button>
+</div>
+<div class="step" id="infoStep">
+  <h3>Informatie</h3>
+  <label>Datum doorvoeren: *
+    <input id="xeXS" type="date" name="datum" required>
+  </label><br>
+  <label>Afwijkende openingstijden:
+    <select id="meqN" name="afwijkende" onchange="toggleOpening()">
+      <option value="Nee">Nee</option>
+      <option value="Ja">Ja</option>
+    </select>
+  </label><br>
+  <label>Is de facturatie e-mail hetzelfde als de bevestiging e-mail?
+    <select id="aDP7" name="facturEmailSame" onchange="toggleFacturEmail()">
+      <option value="Ja">Ja</option>
+      <option value="Nee">Nee</option>
+    </select>
+  </label><br>
+  <label id="facturEmailRow" style="display:none">Facturatie e-mail:
+    <input id="qsmD" type="email" name="facturEmail">
+  </label><br>
+  <label>Is het facturatie-adres hetzelfde als het verzendadres?
+    <select id="ftcZ" name="facturAdresSame" onchange="toggleAltAdres()">
+      <option value="Ja">Ja</option>
+      <option value="Nee">Nee</option>
+    </select>
+  </label><br>
+  <div id="altAdres" style="display:none">
+    <label>Straatnaam:
+      <input id="altStraat" name="altStraat">
+    </label><br>
+    <label>Plaats:
+      <input id="altPlaats" name="altPlaats">
+    </label><br>
+    <label>Provincie:
+      <input id="altProvincie" name="altProvincie">
+    </label><br>
+    <label>Postcode:
+      <input id="altPostcode" name="altPostcode">
+    </label><br>
+  </div>
+  <label>Is het een nieuw verkooppunt (niet voor Jumbo/SPAR)?
+    <select id="m89Y" name="nieuwVerkooppunt">
+      <option value="Nee">Nee</option>
+      <option value="Ja">Ja</option>
+    </select>
+  </label><br>
+  <label>Direct vanuit auto/bus uitgeleverd?
+    <select id="tZd9" name="uitgeleverd">
+      <option value="Nee">Nee</option>
+      <option value="Ja">Ja</option>
+    </select>
+  </label><br>
+  <button type="button" onclick="nextStep()">Next</button>
+</div>
+<div class="step" id="productStep">
+  <h3>Bestelling</h3>
+  <div class="product-group">
+    <h4>Gold Dry Premium Soda</h4>
+    <label><input type="checkbox" id="sodaOriginal" onchange="toggleQty('sodaOriginalQty')"> Gold Dry Original 250ml (24 HE)</label><br>
+    <label><input type="checkbox" id="sodaMindset" onchange="toggleQty('sodaMindsetQty')"> Gold Dry Mindset 250ml (24 HE)</label><br>
+    <label><input type="checkbox" id="sodaDream" onchange="toggleQty('sodaDreamQty')"> Gold Dry Dream 250ml (24 HE)</label><br>
+    <label><input type="checkbox" id="sodaSky" onchange="toggleQty('sodaSkyQty')"> Gold Dry Sky 250ml (24 HE)</label><br>
+    <div id="sodaOriginalQty" style="display:none">
+      Aantal 24x Original: <input id="op9u" type="number" min="0" value="0">
+    </div>
+    <div id="sodaMindsetQty" style="display:none">
+      Aantal 24x Mindset: <input id="kg3w" type="number" min="0" value="0">
+    </div>
+    <div id="sodaDreamQty" style="display:none">
+      Aantal 24x Dream: <input id="79Ki" type="number" min="0" value="0">
+    </div>
+    <div id="sodaSkyQty" style="display:none">
+      Aantal 24x Sky: <input id="qA18" type="number" min="0" value="0">
+    </div>
+  </div>
+  <div class="product-group">
+    <h4>Gold Dry Soda &amp; Vodka Pre-mix 5,5%</h4>
+    <label><input type="checkbox" id="mixOriginal" onchange="toggleQty('mixOriginalQty')"> Gold Dry Original &amp; Vodka Pre-mix 250ml (24 HE)</label><br>
+    <label><input type="checkbox" id="mixMindset" onchange="toggleQty('mixMindsetQty')"> Gold Dry Mindset &amp; Vodka Pre-mix 250ml (24 HE)</label><br>
+    <label><input type="checkbox" id="mixDream" onchange="toggleQty('mixDreamQty')"> Gold Dry Dream &amp; Vodka Pre-mix 250ml (24 HE)</label><br>
+    <label><input type="checkbox" id="mixSky" onchange="toggleQty('mixSkyQty')"> Gold Dry Sky &amp; Vodka Pre-mix 250ml (24 HE)</label><br>
+    <div id="mixOriginalQty" style="display:none">
+      Aantal 24x Original Pre-Mix: <input id="2yGP" type="number" min="0" value="0">
+    </div>
+    <div id="mixMindsetQty" style="display:none">
+      Aantal 24x Mindset Pre-Mix: <input id="woFY" type="number" min="0" value="0">
+    </div>
+    <div id="mixDreamQty" style="display:none">
+      Aantal 24x Dream Pre-Mix: <input id="iZPh" type="number" min="0" value="0">
+    </div>
+    <div id="mixSkyQty" style="display:none">
+      Aantal 24x Sky Pre-Mix: <input id="a4mQ" type="number" min="0" value="0">
+    </div>
+  </div>
+  <div class="product-group">
+    <h4>Sterke drank (doos 6 flessen)</h4>
+    <label><input type="checkbox" id="vodka" onchange="toggleQty('vodkaQty')"> Gold Dry Vodka 70cl (doos)</label><br>
+    <label><input type="checkbox" id="gin" onchange="toggleQty('ginQty')"> Gold Dry Gin 70cl (doos)</label><br>
+    <div id="vodkaQty" style="display:none">
+      Aantal 6x Vodka: <input id="hdRi" type="number" min="0" value="0">
+    </div>
+    <div id="ginQty" style="display:none">
+      Aantal 6x Gin: <input id="4w6u" type="number" min="0" value="0">
+    </div>
+  </div>
+  <div class="product-group">
+    <h4>Display</h4>
+    <label><input type="checkbox" id="display"> Gold Dry Display</label>
+  </div>
+  <label>Overige Informatie:<br>
+    <textarea id="8KKH" name="overige" rows="4" cols="40"></textarea>
+  </label><br>
+  <button type="button" onclick="nextStep()">Next</button>
+</div>
+<div class="step" id="overzichtStep">
+  <h3>Overzicht</h3>
+  <div id="summary"></div>
+  <p class="warning">Ik bevestig dat ik volledig op de hoogte ben van de aard van de bestelde producten en ga akkoord met de bijbehorende voorwaarden, inclusief prijzen, leveringsdata en eventuele andere relevante informatie. Deze verklaring is rechtsgeldig en dient als formele bevestiging van mijn intentie om de bovengenoemde producten van het merk Gold Dry aan te schaffen.</p>
+  <p>Handtekening:</p>
+  <canvas id="signature" width="300" height="150"></canvas><br>
+  <button type="button" onclick="submitForm()">Verstuur</button>
+</div>
+</form>
+<div id="thankyou" class="step">
+  <h3>Bedankt voor je bestelling</h3>
+</div>
+<script>
+let currentStep = 0;
+const steps = document.querySelectorAll('.step');
+const stepnum = document.getElementById('stepnum');
+function showStep(n) {
+  steps.forEach((step, i) => step.classList.toggle('active', i === n));
+  stepnum.textContent = n + 1;
+}
+function nextStep() {
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    if (currentStep === steps.length - 1) updateSummary();
+    showStep(currentStep);
+  }
+}
+function toggleFacturEmail() {
+  const sel = document.getElementById('aDP7').value;
+  document.getElementById('facturEmailRow').style.display = sel === 'Nee' ? 'block' : 'none';
+}
+function toggleAltAdres() {
+  const sel = document.getElementById('ftcZ').value;
+  document.getElementById('altAdres').style.display = sel === 'Nee' ? 'block' : 'none';
+}
+function toggleQty(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+function toggleOpening() {
+  // Placeholder for eventuele logica
+}
+function updateSummary() {
+  const summary = document.getElementById('summary');
+  summary.innerHTML = '';
+  const items = [
+    ['Original', parseInt(document.getElementById('op9u').value || 0)],
+    ['Mindset', parseInt(document.getElementById('kg3w').value || 0)],
+    ['Dream', parseInt(document.getElementById('79Ki').value || 0)],
+    ['Sky', parseInt(document.getElementById('qA18').value || 0)],
+    ['Original Pre-Mix', parseInt(document.getElementById('2yGP').value || 0)],
+    ['Mindset Pre-Mix', parseInt(document.getElementById('woFY').value || 0)],
+    ['Dream Pre-Mix', parseInt(document.getElementById('iZPh').value || 0)],
+    ['Sky Pre-Mix', parseInt(document.getElementById('a4mQ').value || 0)],
+    ['Vodka (doos)', parseInt(document.getElementById('hdRi').value || 0)],
+    ['Gin (doos)', parseInt(document.getElementById('4w6u').value || 0)]
+  ];
+  let total = 0;
+  items.forEach(([name, qty]) => {
+    if (qty > 0) {
+      const line = document.createElement('div');
+      const cost = qty * 10; // voorbeeldprijs
+      line.textContent = `${name}: €${cost}`;
+      summary.appendChild(line);
+      total += cost;
+    }
+  });
+  const totLine = document.createElement('div');
+  totLine.className = 'summary-item';
+  totLine.innerHTML = `<strong>Totaal: €${total}</strong>`;
+  summary.appendChild(totLine);
+}
+function submitForm() {
+  showStep(steps.length - 1);
+}
+// Eenvoudige handtekening
+let drawing = false;
+const canvas = document.getElementById('signature');
+const ctx = canvas.getContext('2d');
+canvas.addEventListener('mousedown', () => { drawing = true; });
+canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+canvas.addEventListener('mousemove', draw);
+function draw(e) {
+  if (!drawing) return;
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX, e.offsetY);
+}
+// Auto-fill via spreadsheets
+const SHEETS = [
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQd5l-abTTXYY_T4d2iJoLewaNseO_2UH6OoiCiCEWfjP_3T6cbUVd4WQp6QjnS_aoCRfwqgEZRchsv/pubhtml?gid=51926634&single=true',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQd5l-abTTXYY_T4d2iJoLewaNseO_2UH6OoiCiCEWfjP_3T6cbUVd4WQp6QjnS_aoCRfwqEZRchsv/pubhtml?gid=629687264&single=true',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQd5l-abTTXYY_T4d2iJoLewaNseO_2UH6OoiCiCEWfjP_3T6cbUVd4WQp6QjnSpiCRfwqEZRchsv/pubhtml?gid=0&single=true',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQd5l-abTTXYY_T4d2iJoLewaNseO_2UH6OoiCiCEWfjP_3T6cbUVd4WQp6QjnSpiCRfwqEZRchsv/pubhtml?gid=1984994851&single=true',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQd5l-abTTXYY_T4d2iJoLewaNseO_2UH6OoiCiCEWfjP_3T6cbUVd4WQp6QjnSpiCRfwqEZRchsv/pubhtml?gid=1864994851&single=true',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQd5l-abTTXYY_T4d2iJoLewaNseO_2UH6OoiCiCEWfjP_3T6cbUVd4WQp6QjnSpiCRfwqEZRchsv/pubhtml?gid=1028454158&single=true',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQd5l-abTTXYY_T4d2iJoLewaNseO_2UH6OoiCiCEWfjP_3T6cbUVd4WQp6QjnSpiCRfwqEZRchsv/pubhtml?gid=1608034829&single=true'
+];
+const lookupMap = new Map();
+async function loadSheets() {
+  for (const url of SHEETS) {
+    const resp = await fetch(url);
+    const text = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const rows = Array.from(doc.querySelectorAll('table tr'));
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length) {
+        const id = cells[0].textContent.trim();
+        lookupMap.set(id, {
+          adres: cells[2].textContent.trim(),
+          postcode: cells[1].textContent.trim(),
+          city: cells[5].textContent.trim(),
+          provincie: cells[11].textContent.trim()
+        });
+      }
+    });
+  }
+}
+async function lookupFiliaal() {
+  if (!lookupMap.size) await loadSheets();
+  const id = document.getElementById('2fC3').value.trim();
+  if (lookupMap.has(id)) {
+    const data = lookupMap.get(id);
+    document.getElementById('address').value = data.adres;
+    document.getElementById('postcode').value = data.postcode;
+    document.getElementById('city').value = data.city;
+    document.getElementById('provincie').value = data.provincie;
+  }
+}
+</script>
+</body>
+</html>
