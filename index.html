@@ -7,8 +7,8 @@
 <style>
   body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: #f9f9f9;
-    color: #333;
+    background: #111;
+    color: #fff;
     margin: 0;
     padding: 20px;
   }
@@ -16,10 +16,10 @@
   form {
     max-width: 800px;
     margin: auto;
-    background: #fff;
+    background: #222;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
   .step { display: none; }
@@ -38,8 +38,31 @@
     padding: 8px;
     margin: 5px 0 15px 0;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     border-radius: 4px;
+    background: #333;
+    color: #fff;
+  }
+
+  label {
+    color: #fff;
+  }
+
+  .btn-group {
+    margin: 5px 0 15px 0;
+  }
+  .btn-group button {
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-right: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .btn-group button.active {
+    background: #fff;
+    color: #000;
   }
 
   button {
@@ -131,27 +154,27 @@
   <label>Datum doorvoeren: *
     <input id="xeXS" type="date" name="datum" required>
   </label><br>
-  <label>Afwijkende openingstijden:
-    <select id="meqN" name="afwijkende" onchange="toggleOpening()">
-      <option value="Nee">Nee</option>
-      <option value="Ja">Ja</option>
-    </select>
-  </label><br>
-  <label>Is de facturatie e-mail hetzelfde als de bevestiging e-mail?
-    <select id="aDP7" name="facturEmailSame" onchange="toggleFacturEmail()">
-      <option value="Ja">Ja</option>
-      <option value="Nee">Nee</option>
-    </select>
-  </label><br>
+  <label>Afwijkende openingstijden:</label>
+  <div class="btn-group">
+    <input type="hidden" id="meqN" name="afwijkende" value="Nee">
+    <button type="button" onclick="setToggle('meqN','Ja',this)">Ja</button>
+    <button type="button" class="active" onclick="setToggle('meqN','Nee',this)">Nee</button>
+  </div>
+  <label>Is de facturatie e-mail hetzelfde als de bevestiging e-mail?</label>
+  <div class="btn-group">
+    <input type="hidden" id="aDP7" name="facturEmailSame" value="Ja">
+    <button type="button" class="active" onclick="setToggle('aDP7','Ja',this);toggleFacturEmail()">Ja</button>
+    <button type="button" onclick="setToggle('aDP7','Nee',this);toggleFacturEmail()">Nee</button>
+  </div>
   <label id="facturEmailRow" style="display:none">Facturatie e-mail:
     <input id="qsmD" type="email" name="facturEmail">
   </label><br>
-  <label>Is het facturatie-adres hetzelfde als het verzendadres?
-    <select id="ftcZ" name="facturAdresSame" onchange="toggleAltAdres()">
-      <option value="Ja">Ja</option>
-      <option value="Nee">Nee</option>
-    </select>
-  </label><br>
+  <label>Is het facturatie-adres hetzelfde als het verzendadres?</label>
+  <div class="btn-group">
+    <input type="hidden" id="ftcZ" name="facturAdresSame" value="Ja">
+    <button type="button" class="active" onclick="setToggle('ftcZ','Ja',this);toggleAltAdres()">Ja</button>
+    <button type="button" onclick="setToggle('ftcZ','Nee',this);toggleAltAdres()">Nee</button>
+  </div>
   <div id="altAdres" style="display:none">
     <label>Straatnaam:
       <input id="altStraat" name="altStraat">
@@ -166,18 +189,18 @@
       <input id="altPostcode" name="altPostcode">
     </label><br>
   </div>
-  <label>Is het een nieuw verkooppunt (niet voor Jumbo/SPAR)?
-    <select id="m89Y" name="nieuwVerkooppunt">
-      <option value="Nee">Nee</option>
-      <option value="Ja">Ja</option>
-    </select>
-  </label><br>
-  <label>Direct vanuit auto/bus uitgeleverd?
-    <select id="tZd9" name="uitgeleverd">
-      <option value="Nee">Nee</option>
-      <option value="Ja">Ja</option>
-    </select>
-  </label><br>
+  <label>Is het een nieuw verkooppunt (niet voor Jumbo/SPAR)?</label>
+  <div class="btn-group">
+    <input type="hidden" id="m89Y" name="nieuwVerkooppunt" value="Nee">
+    <button type="button" onclick="setToggle('m89Y','Ja',this)">Ja</button>
+    <button type="button" class="active" onclick="setToggle('m89Y','Nee',this)">Nee</button>
+  </div>
+  <label>Direct vanuit auto/bus uitgeleverd?</label>
+  <div class="btn-group">
+    <input type="hidden" id="tZd9" name="uitgeleverd" value="Nee">
+    <button type="button" onclick="setToggle('tZd9','Ja',this)">Ja</button>
+    <button type="button" class="active" onclick="setToggle('tZd9','Nee',this)">Nee</button>
+  </div>
   <button type="button" onclick="nextStep()">Next</button>
 </div>
 <div class="step" id="productStep">
@@ -266,6 +289,14 @@ function nextStep() {
     if (currentStep === steps.length - 1) updateSummary();
     showStep(currentStep);
   }
+}
+
+function setToggle(id, value, btn) {
+  const input = document.getElementById(id);
+  input.value = value;
+  const group = btn.parentElement;
+  group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
 }
 function toggleFacturEmail() {
   const sel = document.getElementById('aDP7').value;
