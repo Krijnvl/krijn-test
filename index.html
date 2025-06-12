@@ -94,6 +94,20 @@
     font-weight: bold;
   }
 
+  .address-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: #1b1b1b;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+  .address-block label {
+    display: flex;
+    flex-direction: column;
+  }
+
   canvas {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -118,20 +132,22 @@
     <input id="companyName" name="companyName" required>
   </label><br>
   <label>Filiaal ID:
-    <input id="2fC3" name="filiaalId" required onblur="lookupFiliaal()">
+    <input id="2fC3" name="filiaalId" required oninput="lookupFiliaal()">
   </label><br>
+  <div class="address-block">
   <label>Adres:
     <input id="address" name="address" readonly>
-  </label><br>
+  </label>
   <label>Postcode:
     <input id="postcode" name="postcode" readonly>
-  </label><br>
+  </label>
   <label>City:
     <input id="city" name="city" readonly>
-  </label><br>
+  </label>
   <label>Provincie:
     <input id="provincie" name="provincie" readonly>
-  </label><br>
+  </label>
+</div>
   <label>Voornaam:
     <input id="gWe8" name="firstName" required>
   </label><br>
@@ -156,14 +172,14 @@
   </label><br>
   <label>Afwijkende openingstijden:</label>
   <div class="btn-group">
-    <input type="hidden" id="meqN" name="afwijkende" value="Nee">
+    <input type="hidden" id="meqN" name="afwijkende" value="">
     <button type="button" onclick="setToggle('meqN','Ja',this)">Ja</button>
-    <button type="button" class="active" onclick="setToggle('meqN','Nee',this)">Nee</button>
+    <button type="button" onclick="setToggle('meqN','Nee',this)">Nee</button>
   </div>
   <label>Is de facturatie e-mail hetzelfde als de bevestiging e-mail?</label>
   <div class="btn-group">
-    <input type="hidden" id="aDP7" name="facturEmailSame" value="Ja">
-    <button type="button" class="active" onclick="setToggle('aDP7','Ja',this);toggleFacturEmail()">Ja</button>
+    <input type="hidden" id="aDP7" name="facturEmailSame" value="">
+    <button type="button" onclick="setToggle('aDP7','Ja',this);toggleFacturEmail()">Ja</button>
     <button type="button" onclick="setToggle('aDP7','Nee',this);toggleFacturEmail()">Nee</button>
   </div>
   <label id="facturEmailRow" style="display:none">Facturatie e-mail:
@@ -171,8 +187,8 @@
   </label><br>
   <label>Is het facturatie-adres hetzelfde als het verzendadres?</label>
   <div class="btn-group">
-    <input type="hidden" id="ftcZ" name="facturAdresSame" value="Ja">
-    <button type="button" class="active" onclick="setToggle('ftcZ','Ja',this);toggleAltAdres()">Ja</button>
+    <input type="hidden" id="ftcZ" name="facturAdresSame" value="">
+    <button type="button" onclick="setToggle('ftcZ','Ja',this);toggleAltAdres()">Ja</button>
     <button type="button" onclick="setToggle('ftcZ','Nee',this);toggleAltAdres()">Nee</button>
   </div>
   <div id="altAdres" style="display:none">
@@ -191,15 +207,15 @@
   </div>
   <label>Is het een nieuw verkooppunt (niet voor Jumbo/SPAR)?</label>
   <div class="btn-group">
-    <input type="hidden" id="m89Y" name="nieuwVerkooppunt" value="Nee">
+    <input type="hidden" id="m89Y" name="nieuwVerkooppunt" value="">
     <button type="button" onclick="setToggle('m89Y','Ja',this)">Ja</button>
-    <button type="button" class="active" onclick="setToggle('m89Y','Nee',this)">Nee</button>
+    <button type="button" onclick="setToggle('m89Y','Nee',this)">Nee</button>
   </div>
   <label>Direct vanuit auto/bus uitgeleverd?</label>
   <div class="btn-group">
-    <input type="hidden" id="tZd9" name="uitgeleverd" value="Nee">
+    <input type="hidden" id="tZd9" name="uitgeleverd" value="">
     <button type="button" onclick="setToggle('tZd9','Ja',this)">Ja</button>
-    <button type="button" class="active" onclick="setToggle('tZd9','Nee',this)">Nee</button>
+    <button type="button" onclick="setToggle('tZd9','Nee',this)">Nee</button>
   </div>
   <button type="button" onclick="nextStep()">Next</button>
 </div>
@@ -405,6 +421,7 @@ async function lookupFiliaal() {
     document.getElementById('provincie').value = data.provincie;
   }
 }
+loadSheets();
 </script>
 </body>
 </html>
